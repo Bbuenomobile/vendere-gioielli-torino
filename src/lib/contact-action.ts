@@ -3,6 +3,7 @@
 import { Resend } from 'resend';
 
 export type ContactState = {
+  ok?: boolean;
   success?: boolean;
   error?: string;
   message?: string;
@@ -22,13 +23,14 @@ export async function submitContact(
   const category = formData.get('category')?.toString().trim() || 'Richiesta Generale';
 
   if (!name || !email) {
-    return { error: 'Nome ed email sono campi obbligatori per ricevere la stima.' };
+    return { ok: false, error: 'Nome ed email sono campi obbligatori per ricevere la stima.', message: 'Nome ed email sono campi obbligatori per ricevere la stima.' };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.warn('RESEND_API_KEY mancante. Simulazione invio riuscito per test.');
     return {
+      ok: true,
       success: true,
       message: 'Grazie per la richiesta. Uno dei nostri gemmologi vi contatterà con la massima discrezione entro 24 ore.',
     };
@@ -65,13 +67,16 @@ export async function submitContact(
       html,
     });
     return {
+      ok: true,
       success: true,
       message: 'La vostra richiesta è stata inoltrata al nostro gabinetto gemmologico. Riceverete una risposta confidenziale entro 24 ore.',
     };
   } catch (err: any) {
     console.error('Errore invio Resend:', err);
     return {
+      ok: false,
       error: 'Impossibile completare l\'invio in questo momento. Vi invitiamo a contattarci direttamente via telefono o WhatsApp.',
+      message: 'Impossibile completare l\'invio in questo momento. Vi invitiamo a contattarci direttamente via telefono o WhatsApp.',
     };
   }
 }
