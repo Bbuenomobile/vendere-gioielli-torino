@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { StickyCTA } from '@/components/sticky-cta';
+import { StickyCta } from '@/components/sticky-cta';
 import { site } from '@/lib/site';
 import './globals.css';
 
@@ -157,7 +157,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
-        <StickyCTA />
+        <StickyCta />
       </body>
     </html>
   );
